@@ -17,7 +17,7 @@ const FindGame = () => {
   return (
     <>
       {games?.gameStatus == "2" ? navigate("/game") : ""}
-      <div className="flex flex-col w-full items-center">
+      <div className="flex flex-col w-full items-center max-h-10 ">
         <table className="w-4/5 text-sm text-left text-gray-500 table-auto">
           <caption className="p-2 text-lg font-semibold text-left text-gray-900"></caption>
           <thead className="text-xs text-white uppercase bg-green-500">
@@ -33,7 +33,7 @@ const FindGame = () => {
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="overflow-y-auto">
             {Array.isArray(games) &&
               games.map((game: IGame) => (
                 <tr key={game.id} className="">

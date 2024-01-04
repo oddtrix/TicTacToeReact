@@ -11,6 +11,7 @@ const Game = () => {
     dispatch(CreateGame());
     console.log("game createdd)))");
   };
+
   return (
     <>
       {game?.gameStatus == "1" ? navigate(`/game`) : <></>}

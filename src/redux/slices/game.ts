@@ -60,7 +60,11 @@ const initialState: IGameState = {
 const gameSlice = createSlice({
   name: "game",
   initialState,
-  reducers: {},
+  reducers: {
+    updateGameState: (state, action) => {
+      state.data = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(CreateGame.pending, (state) => {
@@ -101,4 +105,5 @@ const gameSlice = createSlice({
       });
   },
 });
+export const { updateGameState } = gameSlice.actions;
 export const gameReducer = gameSlice.reducer;

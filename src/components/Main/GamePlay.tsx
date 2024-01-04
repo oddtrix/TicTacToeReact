@@ -1,51 +1,59 @@
-import { useEffect } from "react";
 import { circle, cross } from "../../constants/string.constants";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { io } from "socket.io-client";
+import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import { updateGameState } from "../../redux/slices/game";
+
 const GamePlay = () => {
   const dispatch = useAppDispatch();
   const game = useAppSelector((state) => state.game.data);
+  const userName = useAppSelector((state) => state.profile.data?.userName);
   const draw = (div: HTMLDivElement) => {
     div.innerText = circle;
   };
-  useEffect(() => {
-    // Подключение к серверу через веб-сокет
-    const socket = io("https://localhost:44338/gamehub");
+  console.log(game)
 
-    // Логика для обработки событий веб-сокетов
-    socket.on("gameUpdate", (gameId) => {
-      // Выполняйте запрос на сервер для получения обновленного состояния игры
-      const token = window.localStorage.getItem("token");
-      fetch(`https://localhost:44338/api/Game/GetGameById?gameId=${gameId}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`, // Добавьте ваш токен авторизации
-          "Content-Type": "application/json",
-        },
+  const joinGame = async () => {
+    const gameId = game?.id;
+    try {
+      const connection = new HubConnectionBuilder()
+        .withUrl('https://localhost:44338/game')
+        .configureLogging(LogLevel.Information)
+        .build();
+
+      connection.on("JoinedPlayer", (message) => {
+        console.log(`${message} has joined to the game`);
+
+        connection.invoke("UpdateGameState", gameId, game)
+          .catch(err => console.error(err));
+      });
+
+      connection.on("ReceiveGameState", (serializedGameState) => {
+        const receivedGameState = JSON.parse(serializedGameState);
+        dispatch(updateGameState(receivedGameState));
+        console.log("Received game state:", receivedGameState);
+      });
+
+      await connection.start().then(() => {
+        console.log("Connection to the hub is established");
+      }).then(() => {
+        console.log(gameId)
+        if (gameId !== undefined) {
+          connection.invoke("JoinGameGroup", gameId, userName)
+            .catch(err => console.error(err));
+        }
       })
-        .then((response) => response.json())
-        .then((data) => {
-          // Обработка полученных данных
-          console.log("Обновленное состояние игры:", data);
-        })
-        .catch((error) => {
-          console.error(
-            "Ошибка при получении обновленного состояния игры:",
-            error
-          );
-        });
-    });
 
-    // Отключение от сервера при размонтировании компонента
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  joinGame();
   return (
     <div className="m-auto flex flex-col w-full">
       <div className="flex m-auto items-center justify-between mt-14 mb-10">
         <div className="mr-10">
-          <p>{game?.gamesPlayers[0]?.player?.userName}</p>
+          <p>{1}</p>
         </div>
         <div className="flex">
           <div>
@@ -92,11 +100,11 @@ const GamePlay = () => {
           </div>
         </div>
         <div className="ml-10">
-          <p>{game?.gamesPlayers[1]?.player?.userName}</p>
+          <p>{2}</p>
         </div>
       </div>
       <div className="mt-10 text-center">
-        <p>{game?.gamesPlayers[0]?.player?.userName}`s turn</p>
+        <p>{1}`s turn</p>
       </div>
     </div>
   );
