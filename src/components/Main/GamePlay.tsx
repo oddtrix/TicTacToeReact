@@ -10,7 +10,6 @@ const GamePlay = () => {
   const draw = (div: HTMLDivElement) => {
     div.innerText = circle;
   };
-  console.log(game)
 
   const joinGame = async () => {
     const gameId = game?.id;
@@ -36,7 +35,6 @@ const GamePlay = () => {
       await connection.start().then(() => {
         console.log("Connection to the hub is established");
       }).then(() => {
-        console.log(gameId)
         if (gameId !== undefined) {
           connection.invoke("JoinGameGroup", gameId, userName)
             .catch(err => console.error(err));
