@@ -1,7 +1,6 @@
 import { TailSpin } from "react-loader-spinner";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Loading } from "../../types/global.typing";
-import Navbar from "./Navbar";
 import Profile from "./Profile";
 import React from "react";
 import { GetProfile } from "../../redux/slices/profile";
@@ -16,8 +15,7 @@ export const ProfileScreen = () => {
     dispatch(GetProfile({ userId }));
   }, []);
   return (
-    <div className="flex h-full ">
-      <Navbar />
+    <>
       {profileStatus === Loading.Loaded ? (
         <Profile userId={userId} />
       ) : profileStatus === Loading.Loading ? (
@@ -40,8 +38,6 @@ export const ProfileScreen = () => {
       ) : (
         ""
       )}
-
-      {}
-    </div>
+    </>
   );
 };

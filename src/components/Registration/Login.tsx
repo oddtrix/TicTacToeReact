@@ -149,7 +149,7 @@ const Login = () => {
             className="bg-blue-500 px-8 text-2xl text-white py-2 rounded text-center hover:bg-blue-600 hover:cursor-pointer"
           ></input>
         </form>
-        {userStatus === Loading.Loaded ? <Navigate to="/menu" /> : ""}
+        {userStatus === Loading.Loaded ? <Navigate to="/main" /> : ""}
 
         <div className="relative my-4">
           <span className="relative z-10 px-3 bg-white text-gray-700">or</span>

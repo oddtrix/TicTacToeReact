@@ -5,7 +5,7 @@ import { IUserId } from "../../types/user.typing";
 const Profile = ({ userId }: { userId: IUserId }) => {
   const profile = useAppSelector((state) => state.profile.data);
   return (
-    <div className="flex w-full">
+    <>
       <div className="w-3/5 flex shadow-lg border h-60 items-center justify-center m-auto mt-10">
         <div className="flex">
           <div className="flex w-40 h-40">
@@ -19,7 +19,7 @@ const Profile = ({ userId }: { userId: IUserId }) => {
         </div>
       </div>
       {userId.id !== undefined ? true : <Navigate to="/login" />}
-    </div>
+    </>
   );
 };
 
