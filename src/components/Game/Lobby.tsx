@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { CreateGame } from "../../redux/slices/game";
 
-const Game = () => {
+const Lobby = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const game = useAppSelector((state) => state.game.data);
@@ -14,7 +14,7 @@ const Game = () => {
   return (
     <>
       {game?.gameStatus == "1" ? navigate(`/waiting-room`) : <></>}
-      <div className="text-center m-auto">
+      <div className="text-center mt-52">
         <button
           onClick={() => createGame()}
           className="bg-blue-500 px-8 text-2xl text-white py-2 rounded text-center hover:bg-blue-600 hover:cursor-pointer"
@@ -43,4 +43,4 @@ const Game = () => {
   );
 };
 
-export default Game;
+export default Lobby;

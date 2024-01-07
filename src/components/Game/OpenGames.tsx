@@ -4,7 +4,7 @@ import { GetOpenGames, JoinToGame } from "../../redux/slices/game";
 import { IGame, IGameId } from "../../types/game.typing";
 import { useNavigate } from "react-router-dom";
 
-const FindGame = () => {
+const OpenGames = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const games = useAppSelector((state) => state.game.data);
@@ -58,4 +58,4 @@ const FindGame = () => {
   );
 };
 
-export default FindGame;
+export default OpenGames;
