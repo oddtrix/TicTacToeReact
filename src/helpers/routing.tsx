@@ -8,6 +8,7 @@ import Login from "../components/Registration/Login";
 import WaitingRoom from "../components/Game/WaitingRoom";
 import OpenGames from "../components/Game/OpenGames";
 import GamePlay from "../components/Game/GamePlay";
+import Starting from "../components/Game/Starting";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,16 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <WaitingRoom />,
+        index: true,
+      },
+    ],
+  },
+  {
+    path: "/starting",
+    element: <Layout />,
+    children: [
+      {
+        element: <Starting />,
         index: true,
       },
     ],

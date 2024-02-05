@@ -7,7 +7,7 @@ export const getUserId = () => {
   const token = window.localStorage.getItem("token");
   const decoded: DecodedToken | null = token ? jwt_decode(token) : null;
   const userId: IUserId = decoded
-    ? { id: decoded[idClaim] }
-    : { id: undefined };
+    ? { Id: decoded[idClaim] }
+    : { Id: undefined };
   return userId;
 };

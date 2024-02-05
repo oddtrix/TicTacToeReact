@@ -1,26 +1,26 @@
 export interface IUser {
-  userName: string;
-  password: string;
-  email: string;
-  name: string;
-  avatarURL: string;
-  rating: number;
+  UserName: string;
+  Password: string;
+  Email: string;
+  Name: string;
+  AvatarURL: string;
+  Rating: number;
 }
 export interface IUserId {
-  id: string | undefined;
+  Id: string | undefined;
 }
 
 export interface IUserLoginDTO {
-  email: string;
-  password: string;
+  Email: string;
+  Password: string;
 }
 
-export interface IUserSignInDTO extends IUser {}
+export interface IUserSignInDTO extends IUser { }
 
 export interface IRole {
-  role: string | undefined;
+  Role: string | undefined;
 }
 
 export interface IUserName {
-  username: string | undefined;
+  UserName: string | undefined;
 }

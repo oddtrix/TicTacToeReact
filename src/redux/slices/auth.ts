@@ -29,8 +29,8 @@ export const RegisterUser = createAsyncThunk(
 );
 
 const initialState: IUserState = {
-  data: null,
-  status: Loading.Idle,
+  Data: null,
+  Status: Loading.Idle,
 };
 
 const authSlice = createSlice({
@@ -38,47 +38,47 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state.data = null;
-      state.status = Loading.Idle;
+      state.Data = null;
+      state.Status = Loading.Idle;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(LoginUser.pending, (state) => {
-        state.status = Loading.Loading;
-        state.data = null;
+        state.Status = Loading.Loading;
+        state.Data = null;
       })
       .addCase(LoginUser.fulfilled, (state, action) => {
-        state.status = Loading.Loaded;
-        state.data = action.payload;
+        state.Status = Loading.Loaded;
+        state.Data = action.payload;
       })
       .addCase(LoginUser.rejected, (state) => {
-        state.status = Loading.Error;
-        state.data = null;
+        state.Status = Loading.Error;
+        state.Data = null;
       })
       .addCase(fetchAuthMe.pending, (state) => {
-        state.status = Loading.Loading;
-        state.data = null;
+        state.Status = Loading.Loading;
+        state.Data = null;
       })
       .addCase(fetchAuthMe.fulfilled, (state, action) => {
-        state.status = Loading.Loaded;
-        state.data = action.payload;
+        state.Status = Loading.Loaded;
+        state.Data = action.payload;
       })
       .addCase(fetchAuthMe.rejected, (state) => {
-        state.status = Loading.Error;
-        state.data = null;
+        state.Status = Loading.Error;
+        state.Data = null;
       })
       .addCase(RegisterUser.pending, (state) => {
-        state.status = Loading.Loading;
-        state.data = null;
+        state.Status = Loading.Loading;
+        state.Data = null;
       })
       .addCase(RegisterUser.fulfilled, (state, action) => {
-        state.status = Loading.Success;
-        state.data = action.payload;
+        state.Status = Loading.Success;
+        state.Data = action.payload;
       })
       .addCase(RegisterUser.rejected, (state) => {
-        state.status = Loading.Error;
-        state.data = null;
+        state.Status = Loading.Error;
+        state.Data = null;
       });
   },
 });

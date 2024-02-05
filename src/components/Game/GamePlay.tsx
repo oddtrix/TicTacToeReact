@@ -1,52 +1,54 @@
 import { circle, cross } from "../../constants/string.constants";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { updateGameState } from "../../redux/slices/game";
+import React from "react";
 
 const GamePlay = () => {
   const dispatch = useAppDispatch();
-  const game = useAppSelector((state) => state.game.data);
-  const userName = useAppSelector((state) => state.profile.data?.userName);
+  const game = useAppSelector((state) => state.game.Data);
+  const userName = useAppSelector((state) => state.profile.Data?.UserName);
   const draw = (div: HTMLDivElement) => {
     div.innerText = circle;
   };
 
-  const joinGame = async () => {
-    const gameId = game?.id;
-    try {
-      const connection = new HubConnectionBuilder()
-        .withUrl('https://localhost:44338/game')
-        .configureLogging(LogLevel.Information)
-        .build();
+  // React.useEffect(() => {
+  //   const gameCycle = async () => {
+  //     const gameId = game?.id;
+  //     try {
+  //       const connection = new HubConnectionBuilder()
+  //         .withUrl('https://localhost:44338/game')
+  //         .configureLogging(LogLevel.Information)
+  //         .build();
 
-      connection.on("JoinedPlayer", (message) => {
-        console.log(`${message} has joined to the game`);
+  //       connection.on("JoinedPlayer", (message) => {
+  //         console.log(`${message} has joined to the game`);
 
-        connection.invoke("UpdateGameState", gameId, game)
-          .catch(err => console.error(err));
-      });
+  //         // connection.invoke("UpdateGameState", gameId, game)
+  //         //   .catch(err => console.error(err));
+  //       });
 
-      connection.on("ReceiveGameState", (serializedGameState) => {
-        const receivedGameState = JSON.parse(serializedGameState);
-        dispatch(updateGameState(receivedGameState));
-        console.log("Received game state:", receivedGameState);
-      });
+  // connection.on("ReceiveGameState", (GameState) => {
 
-      await connection.start().then(() => {
-        console.log("Connection to the hub is established");
-      }).then(() => {
-        if (gameId !== undefined) {
-          connection.invoke("JoinGameGroup", gameId, userName)
-            .catch(err => console.error(err));
-        }
-      })
+  //   dispatch(updateGameState(GameState));
+  //   console.log("Received game state:", GameState);
+  // });
 
+  //       await connection.start().then(() => {
+  //         console.log("Connection to the hub is established");
+  //       }).then(() => {
+  //         if (gameId !== undefined) {
+  //           connection.invoke("JoinGameGroup", gameId, userName)
+  //             .catch(err => console.error(err));
+  //         }
+  //       })
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   }
+  //   gameCycle();
+  // }, [])
 
-    } catch (e) {
-      console.log(e);
-    }
-  }
-  joinGame();
   return (
     <div className="m-auto flex flex-col w-full">
       <div className="flex m-auto items-center justify-between mt-14 mb-10">

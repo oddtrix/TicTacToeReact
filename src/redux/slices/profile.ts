@@ -10,7 +10,7 @@ export const GetProfile = createAsyncThunk(
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    const { data } = await axios.get(`api/Players/GetById/${userId.id}`, {
+    const { data } = await axios.get(`api/Players/GetById/${userId.Id}`, {
       headers,
     });
     return data;
@@ -33,8 +33,8 @@ export const GetAllPlayers = createAsyncThunk(
 );
 
 const initialState: IUserState = {
-  data: null,
-  status: Loading.Idle,
+  Data: null,
+  Status: Loading.Idle,
 };
 
 const profileSlice = createSlice({
@@ -44,28 +44,28 @@ const profileSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(GetProfile.pending, (state) => {
-        state.status = Loading.Loading;
-        state.data = null;
+        state.Status = Loading.Loading;
+        state.Data = null;
       })
       .addCase(GetProfile.fulfilled, (state, action) => {
-        state.status = Loading.Loaded;
-        state.data = action.payload;
+        state.Status = Loading.Loaded;
+        state.Data = action.payload;
       })
       .addCase(GetProfile.rejected, (state) => {
-        state.status = Loading.Error;
-        state.data = null;
+        state.Status = Loading.Error;
+        state.Data = null;
       })
       .addCase(GetAllPlayers.pending, (state) => {
-        state.status = Loading.Loading;
-        state.data = null;
+        state.Status = Loading.Loading;
+        state.Data = null;
       })
       .addCase(GetAllPlayers.fulfilled, (state, action) => {
-        state.status = Loading.Loaded;
-        state.data = action.payload;
+        state.Status = Loading.Loaded;
+        state.Data = action.payload;
       })
       .addCase(GetAllPlayers.rejected, (state) => {
-        state.status = Loading.Error;
-        state.data = null;
+        state.Status = Loading.Error;
+        state.Data = null;
       });
   },
 });

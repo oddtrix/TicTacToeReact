@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../helpers/http.module";
 import { IGameState, Loading } from "../../types/global.typing";
-import { IGame, IGameId } from "../../types/game.typing";
+import { IGame } from "../../types/game.typing";
 
 export const CreateGame = createAsyncThunk("game/CreateGame", async () => {
   const body = {
-    gameStatus: 0,
-    isPrivate: false,
-    chatId: 0,
-    fieldId: 0,
+    GameStatus: 0,
+    IsPrivate: false,
+    ChatId: 0,
+    FieldId: 0,
   };
   const token = window.localStorage.getItem("token");
 
@@ -37,7 +37,7 @@ export const GetOpenGames = createAsyncThunk("game/GetOpenGames", async () => {
 export const JoinToGame = createAsyncThunk(
   "game/JoinToGame",
   async ({ game }: { game: IGame }) => {
-    const gameId = game.id;
+    const gameId = game.Id;
     const token = window.localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -53,8 +53,8 @@ export const JoinToGame = createAsyncThunk(
 );
 
 const initialState: IGameState = {
-  data: null,
-  status: Loading.Idle,
+  Data: null,
+  Status: Loading.Idle,
 };
 
 const gameSlice = createSlice({
@@ -62,46 +62,46 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     updateGameState: (state, action) => {
-      state.data = action.payload;
-    },
+      state.Data = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
       .addCase(CreateGame.pending, (state) => {
-        state.status = Loading.Loading;
-        state.data = null;
+        state.Status = Loading.Loading;
+        state.Data = null;
       })
       .addCase(CreateGame.fulfilled, (state, action) => {
-        state.status = Loading.Loaded;
-        state.data = action.payload;
+        state.Status = Loading.Loaded;
+        state.Data = action.payload;
       })
       .addCase(CreateGame.rejected, (state) => {
-        state.status = Loading.Error;
-        state.data = null;
+        state.Status = Loading.Error;
+        state.Data = null;
       })
       .addCase(GetOpenGames.pending, (state) => {
-        state.status = Loading.Loading;
-        state.data = null;
+        state.Status = Loading.Loading;
+        state.Data = null;
       })
       .addCase(GetOpenGames.fulfilled, (state, action) => {
-        state.status = Loading.Loaded;
-        state.data = action.payload;
+        state.Status = Loading.Loaded;
+        state.Data = action.payload;
       })
       .addCase(GetOpenGames.rejected, (state) => {
-        state.status = Loading.Error;
-        state.data = null;
+        state.Status = Loading.Error;
+        state.Data = null;
       })
       .addCase(JoinToGame.pending, (state) => {
-        state.status = Loading.Loading;
-        state.data = null;
+        state.Status = Loading.Loading;
+        state.Data = null;
       })
       .addCase(JoinToGame.fulfilled, (state, action) => {
-        state.status = Loading.Loaded;
-        state.data = action.payload;
+        state.Status = Loading.Loaded;
+        state.Data = action.payload;
       })
       .addCase(JoinToGame.rejected, (state) => {
-        state.status = Loading.Error;
-        state.data = null;
+        state.Status = Loading.Error;
+        state.Data = null;
       });
   },
 });

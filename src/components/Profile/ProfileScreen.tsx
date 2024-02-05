@@ -8,7 +8,7 @@ import { IUserId } from "../../types/user.typing";
 import { getUserId } from "../../helpers/additionFunction";
 
 export const ProfileScreen = () => {
-  const profileStatus = useAppSelector((state) => state.profile.status);
+  const profileStatus = useAppSelector((state) => state.profile.Status);
   const dispatch = useAppDispatch();
   const userId: IUserId = getUserId();
   React.useEffect(() => {

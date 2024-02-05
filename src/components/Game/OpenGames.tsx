@@ -1,13 +1,13 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { GetOpenGames, JoinToGame } from "../../redux/slices/game";
-import { IGame, IGameId } from "../../types/game.typing";
+import { IGame } from "../../types/game.typing";
 import { useNavigate } from "react-router-dom";
 
 const OpenGames = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const games = useAppSelector((state) => state.game.data);
+  const games = useAppSelector((state) => state.game.Data);
   const joinToGame = (game: IGame) => {
     dispatch(JoinToGame({ game }));
   };
@@ -16,7 +16,7 @@ const OpenGames = () => {
   }, []);
   return (
     <>
-      {games?.gameStatus == "2" ? navigate("/game") : ""}
+      {games?.GameStatus == "2" ? navigate("/starting") : <></>}
       <div className="flex flex-col w-full items-center max-h-10 ">
         <table className="w-4/5 text-sm text-left text-gray-500 table-auto">
           <caption className="p-2 text-lg font-semibold text-left text-gray-900"></caption>
@@ -36,10 +36,10 @@ const OpenGames = () => {
           <tbody className="overflow-y-auto">
             {Array.isArray(games) &&
               games.map((game: IGame) => (
-                <tr key={game.id} className="">
-                  <td className="text-center px-6 py-3">{game.id}</td>
+                <tr key={game.Id} className="">
+                  <td className="text-center px-6 py-3">{game.Id}</td>
                   <td className="text-center px-6 py-3">
-                    {game.isPrivate.toString()}
+                    {game.IsPrivate.toString()}
                   </td>
                   <td className="text-center px-6 py-3">
                     <button

@@ -1,6 +1,16 @@
 import { Link } from "react-router-dom";
+import { IUserId } from "../../types/user.typing";
+import { getUserId } from "../../helpers/additionFunction";
+import React from "react";
+import { GetProfile } from "../../redux/slices/profile";
+import { useAppDispatch } from "../../redux/hooks";
 
 const WelcomeScreen = () => {
+  const dispatch = useAppDispatch();
+  const userId: IUserId = getUserId();
+  React.useEffect(() => {
+    dispatch(GetProfile({ userId }));
+  }, []);
   return (
     <>
       <h1 className="text-4xl mt-52">Welcome to TicTacToe</h1>

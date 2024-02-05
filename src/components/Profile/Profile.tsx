@@ -3,22 +3,22 @@ import { Navigate } from "react-router-dom";
 import { IUserId } from "../../types/user.typing";
 
 const Profile = ({ userId }: { userId: IUserId }) => {
-  const profile = useAppSelector((state) => state.profile.data);
+  const profile = useAppSelector((state) => state.profile.Data);
   return (
     <>
       <div className="w-3/5 flex shadow-lg border h-60 items-center justify-center m-auto mt-10">
         <div className="flex">
           <div className="flex w-40 h-40">
-            <img src={profile?.avatarURL} alt="avatar" />
+            <img src={profile?.AvatarURL} alt="avatar" />
           </div>
           <div className="text-lg ml-10 border-l-2 p-5">
-            <p>Username: {profile?.userName}</p>
-            <p>Email: {profile?.email}</p>
-            <p>Rating: {profile?.rating}</p>
+            <p>Username: {profile?.UserName}</p>
+            <p>Email: {profile?.Email}</p>
+            <p>Rating: {profile?.Rating}</p>
           </div>
         </div>
       </div>
-      {userId.id !== undefined ? true : <Navigate to="/login" />}
+      {userId.Id !== undefined ? true : <Navigate to="/login" />}
     </>
   );
 };

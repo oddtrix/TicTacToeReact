@@ -6,14 +6,14 @@ import { CreateGame } from "../../redux/slices/game";
 const Lobby = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const game = useAppSelector((state) => state.game.data);
+  const game = useAppSelector((state) => state.game.Data);
   const createGame = () => {
     dispatch(CreateGame());
   };
 
   return (
     <>
-      {game?.gameStatus == "1" ? navigate(`/waiting-room`) : <></>}
+      {game?.GameStatus == "1" ? navigate(`/waiting-room`) : <></>}
       <div className="text-center mt-52">
         <button
           onClick={() => createGame()}

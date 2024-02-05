@@ -14,7 +14,7 @@ import show from "../../../public/img/show.png";
 const Signup = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const userStatus = useAppSelector((state) => state.auth.status);
+  const userStatus = useAppSelector((state) => state.auth.Status);
 
   const [showPassword, setShowPassword] = React.useState(false);
   const togglePasswordVisibility = () => {

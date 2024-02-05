@@ -12,7 +12,7 @@ import React from "react";
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  const userStatus = useAppSelector((state) => state.auth.status);
+  const userStatus = useAppSelector((state) => state.auth.Status);
   const [showPassword, setShowPassword] = React.useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -52,8 +52,8 @@ const Login = () => {
     if (result.meta.requestStatus === "rejected") {
       setError("root.serverError", { type: "404" });
     }
-    if ("message" in result.payload) {
-      window.localStorage.setItem("token", result.payload.message);
+    if ("Message" in result.payload) {
+      window.localStorage.setItem("token", result.payload.Message);
     }
   };
   setTimeout(() => {
