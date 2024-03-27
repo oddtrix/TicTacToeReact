@@ -9,6 +9,7 @@ import WaitingRoom from "../components/Game/WaitingRoom";
 import OpenGames from "../components/Game/OpenGames";
 import GamePlay from "../components/Game/GamePlay";
 import Starting from "../components/Game/Starting";
+import Practice from "../components/Game/Practice";
 
 export const router = createBrowserRouter([
   {
@@ -61,6 +62,16 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <Game />,
+        index: true,
+      },
+    ],
+  },
+  {
+    path: "/practice",
+    element: <Layout />,
+    children: [
+      {
+        element: <Practice />,
         index: true,
       },
     ],

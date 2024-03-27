@@ -27,19 +27,13 @@ const Navbar = () => {
           to="/menu"
           className="hover:bg-white hover:text-black hover:rounded-lg hover:px-10 leading-10 text-white"
         >
-          Game
-        </Link>
-        <Link
-          to="/history"
-          className="hover:bg-white hover:text-black hover:rounded-lg hover:px-10 leading-10 text-white"
-        >
-          History
+          Play
         </Link>
       </div>
       <Link
         to="/login"
         onClick={onClickLogOut}
-        className="hover:bg-white hover:text-black border hover:rounded-lg hover:px-10 leading-10 text-white bg-inherit rounded-lg px-10 mb-10"
+        className="hover:bg-white hover:text-black border hover:rounded-lg hover:px-6 leading-10 text-white bg-inherit rounded-lg px-6 mb-10"
       >
         Sign out
       </Link>

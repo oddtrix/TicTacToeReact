@@ -1,13 +1,12 @@
-export interface IUser {
+import { IId } from "./global.typing";
+
+export interface IUser extends IId {
   UserName: string;
   Password: string;
   Email: string;
   Name: string;
   AvatarURL: string;
   Rating: number;
-}
-export interface IUserId {
-  Id: string | undefined;
 }
 
 export interface IUserLoginDTO {

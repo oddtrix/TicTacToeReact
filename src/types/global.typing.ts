@@ -1,6 +1,10 @@
 import { IGame } from "./game.typing";
 import { IUser, IUserLoginDTO } from "./user.typing";
 
+export interface IId {
+  Id: string | undefined;
+}
+
 export interface FormData extends IUserLoginDTO { }
 
 export interface DecodedToken {
@@ -17,6 +21,7 @@ export enum Loading {
 
 export interface IUserState {
   Data: IUser | null;
+  History: null;
   Status: Loading;
 }
 
@@ -29,4 +34,11 @@ export interface IGameState {
 export interface IConnectionState {
   ConnectionId: IGame | null;
   Status: Loading;
+}
+
+export enum GameResult{
+  "Win",
+  "Lose",
+  "Draw",
+  "Abandoned"
 }

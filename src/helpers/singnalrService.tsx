@@ -1,6 +1,6 @@
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
-import { updateGameState } from "../redux/slices/game";
-import { useAppDispatch } from "../redux/hooks";
+import { IId } from "../types/global.typing";
+import { IGame } from "../types/game.typing";
 
 const hubConnection = new HubConnectionBuilder()
     .withUrl("https://localhost:44338/game")
@@ -25,33 +25,30 @@ const stopConnection = async () => {
     }
 };
 
-const joinGameGroup = async (gameId, userName) => {
+const leaveGameGroup = async (gameId: IId, userName: string) => {
     try {
-        await hubConnection.invoke("JoinGameGroup", gameId, userName);
+        await hubConnection.send("LeaveGameGroup", gameId, userName);
+    } catch (err) {
+        console.error("Error leaving SignalR group:", err);
+    }
+};
+
+const joinGameGroup = async (gameId: IId, userName: string) => {
+    try {
+        await hubConnection.send("JoinGameGroup", gameId, userName);
         console.log(`Joined game group for game ID ${gameId}`);
     } catch (err) {
         console.error("Error joining game group:", err);
     }
 };
 
-const updatedGameState = async (gameId, game) => {
+const updatedGameState = async (gameId: IId, game: IGame) => {
     try {
-        await hubConnection.invoke("UpdateGameState", gameId, game)
-        console.log('Game state to update', game);
+        await hubConnection.send("UpdateGameState", gameId, game)
+        // console.log('Game state to update', game);
     } catch (err) {
         console.error("Error updating game state:", err);
     }
 }
 
-// hubConnection.on("JoinedPlayer", (message) => {
-//     console.log(`${message} has joined the game`);
-//     // Add logic to handle joined player event
-// });
-
-// hubConnection.on("ReceiveGameState", (gameState) => {
-//     // const dispatch = useAppDispatch();
-//     // dispatch(updateGameState(gameState));
-//     console.log("Received game state:", gameState);
-// });
-
-export { hubConnection, startConnection, stopConnection, joinGameGroup, updatedGameState };
+export { hubConnection, startConnection, stopConnection, joinGameGroup, updatedGameState, leaveGameGroup };

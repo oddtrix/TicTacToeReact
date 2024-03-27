@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../helpers/http.module";
-import { IGameState, Loading } from "../../types/global.typing";
+import { IGameState, IId, Loading } from "../../types/global.typing";
 import { IGame } from "../../types/game.typing";
+import { updatedGameState } from "../../helpers/singnalrService";
 
 export const CreateGame = createAsyncThunk("game/CreateGame", async () => {
   const body = {
@@ -52,6 +53,56 @@ export const JoinToGame = createAsyncThunk(
   }
 );
 
+export const MakeMove = createAsyncThunk(
+  "game/MakeMove",
+  async ({ gameId, fieldId, fieldMovesId, playerId, index } : { gameId: IId, fieldId: IId, fieldMovesId: IId, playerId: IId, index: number }) => {
+    const token = window.localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const { data } = await axios.post(
+      `api/Game/MakeMove`,
+      { gameId, fieldId, fieldMovesId, playerId, index },
+      { headers }
+    );
+
+    await updatedGameState(data.Id, data)
+    return data;
+  }
+);
+
+export const SetWinner = createAsyncThunk(
+  "game/SetWinner",
+  async ({ winnerId, loserId, gameId } : { winnerId : IId, loserId : IId, gameId: IId }) => {
+    const token = window.localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const { data } = await axios.post(
+      `api/Game/SetWinner`,
+      { winnerId, loserId, gameId },
+      { headers }
+    );
+    return data;
+  }
+);
+
+export const SetDraw = createAsyncThunk(
+  "game/SetDraw",
+  async ({ gameId } : { gameId: IId }) => {
+    const token = window.localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const { data } = await axios.post(
+      `api/Game/SetDraw`,
+      { gameId },
+      { headers }
+    );
+    return data;
+  }
+);
+
 const initialState: IGameState = {
   Data: null,
   Status: Loading.Idle,
@@ -62,17 +113,18 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     updateGameState: (state, action) => {
+      state.Status = action.payload.GameStatus
       state.Data = action.payload;
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(CreateGame.pending, (state) => {
-        state.Status = Loading.Loading;
+        state.Status = Loading.Idle;
         state.Data = null;
       })
       .addCase(CreateGame.fulfilled, (state, action) => {
-        state.Status = Loading.Loaded;
+        state.Status = Loading.Loading;
         state.Data = action.payload;
       })
       .addCase(CreateGame.rejected, (state) => {
@@ -100,6 +152,42 @@ const gameSlice = createSlice({
         state.Data = action.payload;
       })
       .addCase(JoinToGame.rejected, (state) => {
+        state.Status = Loading.Error;
+        state.Data = null;
+      })
+      .addCase(MakeMove.pending, (state) => {
+        state.Status = Loading.Loading;
+        state.Data = null;
+      })
+      .addCase(MakeMove.fulfilled, (state, action) => {
+        state.Status = Loading.Loaded;
+        state.Data = action.payload;
+      })
+      .addCase(MakeMove.rejected, (state) => {
+        state.Status = Loading.Error;
+        state.Data = null;
+      })
+      .addCase(SetWinner.pending, (state) => {
+        state.Status = Loading.Loading;
+        state.Data = null;
+      })
+      .addCase(SetWinner.fulfilled, (state, action) => {
+        state.Status = Loading.Loaded;
+        state.Data = action.payload;
+      })
+      .addCase(SetWinner.rejected, (state) => {
+        state.Status = Loading.Error;
+        state.Data = null;
+      })
+      .addCase(SetDraw.pending, (state) => {
+        state.Status = Loading.Loading;
+        state.Data = null;
+      })
+      .addCase(SetDraw.fulfilled, (state, action) => {
+        state.Status = Loading.Loaded;
+        state.Data = action.payload;
+      })
+      .addCase(SetDraw.rejected, (state) => {
         state.Status = Loading.Error;
         state.Data = null;
       });

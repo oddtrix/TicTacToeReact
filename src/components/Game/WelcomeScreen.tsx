@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { IUserId } from "../../types/user.typing";
+import { IId } from "../../types/global.typing";
 import { getUserId } from "../../helpers/additionFunction";
 import React from "react";
 import { GetProfile } from "../../redux/slices/profile";
@@ -7,7 +7,7 @@ import { useAppDispatch } from "../../redux/hooks";
 
 const WelcomeScreen = () => {
   const dispatch = useAppDispatch();
-  const userId: IUserId = getUserId();
+  const userId: IId = getUserId();
   React.useEffect(() => {
     dispatch(GetProfile({ userId }));
   }, []);

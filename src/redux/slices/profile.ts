@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IUserId } from "../../types/user.typing";
+import { IId } from "../../types/global.typing";
 import axios from "../../helpers/http.module";
 import { IUserState, Loading } from "../../types/global.typing";
 
 export const GetProfile = createAsyncThunk(
   "profile/GetProfile",
-  async ({ userId }: { userId: IUserId }) => {
+  async ({ userId }: { userId: IId }) => {
     const token = window.localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -27,13 +27,27 @@ export const GetAllPlayers = createAsyncThunk(
     const { data } = await axios.get(`api/Players/GetAll`, {
       headers,
     });
-    console.log(data);
+    return data;
+  }
+);
+
+export const GetPlayerHistory = createAsyncThunk(
+  "profile/GetPlayerHistory",
+  async ({ userId }: { userId: IId }) => {
+    const token = window.localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const { data } = await axios.get(`api/Players/History/${userId.Id}`, {
+      headers,
+    });
     return data;
   }
 );
 
 const initialState: IUserState = {
   Data: null,
+  History: null,
   Status: Loading.Idle,
 };
 
@@ -66,6 +80,18 @@ const profileSlice = createSlice({
       .addCase(GetAllPlayers.rejected, (state) => {
         state.Status = Loading.Error;
         state.Data = null;
+      })
+      .addCase(GetPlayerHistory.pending, (state) => {
+        state.Status = Loading.Loading;
+        state.History = null;
+      })
+      .addCase(GetPlayerHistory.fulfilled, (state, action) => {
+        state.Status = Loading.Loaded;
+        state.History = action.payload;
+      })
+      .addCase(GetPlayerHistory.rejected, (state) => {
+        state.Status = Loading.Error;
+        state.History = null;
       });
   },
 });
