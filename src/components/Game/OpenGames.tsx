@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { GetOpenGames, JoinToGame } from "../../redux/slices/game";
 import { IGame } from "../../types/game.typing";
 import { useNavigate } from "react-router-dom";
-import { joinGameGroup, startConnection, updatedGameState } from "../../helpers/singnalrService";
+import { joinGameGroup, startConnection, updatedGameState } from "../../helpers/singnalrGameService";
 
 const OpenGames = () => {
   const navigate = useNavigate();
@@ -26,7 +26,8 @@ const OpenGames = () => {
     }
   };
   const joinToGame = (game: IGame) => {
-    dispatch(JoinToGame({ game }));
+    const Id = game?.Id;
+    dispatch(JoinToGame({ Id }));
   };
 
   React.useEffect(() => {

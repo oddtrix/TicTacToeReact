@@ -19,7 +19,7 @@ const startConnection = async () => {
 const stopConnection = async () => {
     try {
         await hubConnection.stop();
-        console.log("Connection to the hub is stopped");
+        console.log("Connection to the GameHub is stopped");
     } catch (err) {
         console.error("Error stopping SignalR connection:", err);
     }

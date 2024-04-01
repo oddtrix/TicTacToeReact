@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../helpers/http.module";
 import { IGameState, IId, Loading } from "../../types/global.typing";
-import { IGame } from "../../types/game.typing";
-import { updatedGameState } from "../../helpers/singnalrService";
+import { updatedGameState } from "../../helpers/singnalrGameService";
 
 export const CreateGame = createAsyncThunk("game/CreateGame", async () => {
   const body = {
@@ -37,16 +36,14 @@ export const GetOpenGames = createAsyncThunk("game/GetOpenGames", async () => {
 
 export const JoinToGame = createAsyncThunk(
   "game/JoinToGame",
-  async ({ game }: { game: IGame }) => {
-    const gameId = game.Id;
+  async ({ Id }: { Id: IId }) => {
     const token = window.localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    console.log(game);
     const { data } = await axios.post(
       `api/Game/JoinToGame`,
-      { gameId },
+      { Id },
       { headers }
     );
     return data;
@@ -103,6 +100,24 @@ export const SetDraw = createAsyncThunk(
   }
 );
 
+export const SendMessage = createAsyncThunk(
+  "game/SendMessage",
+  async ({ gameId, messageBody, chatId, playerId } : { gameId: IId, messageBody: string, chatId: IId, playerId: IId, }) => {
+    const token = window.localStorage.getItem("token");
+    const Id = gameId
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const { data } = await axios.post(
+      `api/Game/SendMessage`,
+      { Id, messageBody, chatId, playerId },
+      { headers }
+    );
+
+    await updatedGameState(data.Id, data)
+    return data;
+  }
+);
 const initialState: IGameState = {
   Data: null,
   Status: Loading.Idle,
@@ -188,6 +203,18 @@ const gameSlice = createSlice({
         state.Data = action.payload;
       })
       .addCase(SetDraw.rejected, (state) => {
+        state.Status = Loading.Error;
+        state.Data = null;
+      })
+      .addCase(SendMessage.pending, (state) => {
+        state.Status = Loading.Loading;
+        state.Data = null;
+      })
+      .addCase(SendMessage.fulfilled, (state, action) => {
+        state.Status = Loading.Loaded;
+        state.Data = action.payload;
+      })
+      .addCase(SendMessage.rejected, (state) => {
         state.Status = Loading.Error;
         state.Data = null;
       });

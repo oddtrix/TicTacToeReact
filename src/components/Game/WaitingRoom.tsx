@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { json, useNavigate } from "react-router-dom";
 import React from "react";
-import { hubConnection, joinGameGroup, startConnection, updatedGameState } from "../../helpers/singnalrService";
+import { hubConnection, joinGameGroup, startConnection, updatedGameState } from "../../helpers/singnalrGameService";
 import { updateGameState } from "../../redux/slices/game";
 
 const WaitingRoom = () => {
@@ -35,10 +35,8 @@ const WaitingRoom = () => {
     });
 
     hubConnection.on("ReceiveGameState", (gameState) => {
-      // console.log("Received game state:", gameState);
       dispatch(updateGameState(JSON.parse(gameState)))
     });
-
   }, [dispatch]);
   
   React.useEffect(() => {

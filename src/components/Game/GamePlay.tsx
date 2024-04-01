@@ -1,11 +1,12 @@
 import React from "react";
-import { hubConnection, leaveGameGroup, stopConnection } from "../../helpers/singnalrService";
+import { hubConnection, leaveGameGroup, stopConnection } from "../../helpers/singnalrGameService";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { MakeMove, SetDraw, SetWinner, updateGameState } from "../../redux/slices/game";
 import { IGame } from "../../types/game.typing";
 import { circle, cross } from "../../constants/string.constants";
 import { Link } from "react-router-dom";
 import { IId } from "../../types/global.typing";
+import Chat from "../Chat/Chat";
 
 const GamePlay = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +20,6 @@ const GamePlay = () => {
   const gameFieldState = [[0,0,0],[0,0,0],[0,0,0]]
 
   const drawResultWindow = (winnerId : IId, draw : boolean) => {
-    console.log(winnerId)
     if (draw) {
       setBgColorClass('bg-yellow-400');
       setGameResult("Draw")
@@ -35,7 +35,6 @@ const GamePlay = () => {
     else {
       setBgColorClass('bg-gray-400');
     }
-    console.log(bgColorClass)
   }
 
   const makeMove = async (num : number) => {
@@ -101,7 +100,6 @@ const GamePlay = () => {
     let gameId = game?.Id;
     let winnerId = game?.GamesPlayers[winnerIndex]?.PlayerId;
     let loserId = game?.GamesPlayers[loserIndex]?.PlayerId;
-    console.log(winnerId)
     drawResultWindow(winnerId, false);
     dispatch(SetWinner({winnerId, loserId, gameId}));
   }
@@ -158,7 +156,6 @@ const GamePlay = () => {
         let gameId = game.Id
         dispatch(SetDraw({ gameId }))
         drawResultWindow(gameId, true);
-        //setGameResult("Draw")
       }
     }
   }, [cells]);
@@ -249,8 +246,9 @@ const GamePlay = () => {
           </div>
         </div>
         <div className="ml-10">
-        <p>{game?.GamesPlayers[1].Player.UserName}{cross}</p>
+          <p>{game?.GamesPlayers[1].Player.UserName}{cross}</p>
         </div>
+        <Chat/>
       </div>
       <div className="mt-10 text-center">
         <p>{game?.StrokeNumber % 2 === 0 ? game?.GamesPlayers[0].Player.UserName : game?.GamesPlayers[1].Player.UserName}`s turn</p>

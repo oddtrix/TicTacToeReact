@@ -5,17 +5,28 @@ export interface IGame extends IId{
   GameStatus: number;
   IsPrivate: boolean;
   Winner: IUser;
-  GamesPlayers: GamesPlayer[];
+  GamesPlayers: IGamesPlayer[];
   Field: IField;
+  Chat: IChat;
   StrokeNumber: number;
   PlayerQueueId: string;
 }
 
-export interface GamesPlayer {
+export interface IGamesPlayer {
   PlayerId: IId,
   Player: IUser,
   GameId: IId,
   Game: IGame
+}
+
+export interface IChat extends IId{
+  Messages: IMessages[];
+}
+export interface IMessages extends IId{
+  MessageBody: string,
+  DateTime: string,
+  ChatId: IId,
+  PlayerId: IId
 }
 interface IField extends IId{
   FieldMoves: IFieldMoves;
