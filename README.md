@@ -1,30 +1,9 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+![loginPage](https://github.com/oddtrix/TicTacToeReact/assets/75144920/aba5bb15-003c-4df7-b8dd-e0b2752c1e18)
+![signupPage](https://github.com/oddtrix/TicTacToeReact/assets/75144920/0026f8b1-d7f6-48b3-a97f-594aed405b9c)
+![mainPage](https://github.com/oddtrix/TicTacToeReact/assets/75144920/8f66dbb2-d9e2-44d8-81cc-48698d85bfde)
+![profilePage](https://github.com/oddtrix/TicTacToeReact/assets/75144920/aa298ecd-7a13-4cc7-9045-7c6b8cc631bd)
+![menuPage](https://github.com/oddtrix/TicTacToeReact/assets/75144920/bf01d374-606d-4f85-a40b-ac9896faf2b4)
+![lobbyPage](https://github.com/oddtrix/TicTacToeReact/assets/75144920/800c64f1-d5c5-4ec9-90a7-8fd03f9fd4ff)
+![gamesPage](https://github.com/oddtrix/TicTacToeReact/assets/75144920/34b8ff36-36fd-4afd-aa84-ddadfb8e4c2e)
+![gamePage](https://github.com/oddtrix/TicTacToeReact/assets/75144920/9d2257c7-b26a-4ce9-b5e2-576248c479aa)
+![gameresPage](https://github.com/oddtrix/TicTacToeReact/assets/75144920/6cffb60a-4bfe-4255-bdc7-8e009caeb0e0)
