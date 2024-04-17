@@ -86,14 +86,14 @@ export const SetWinner = createAsyncThunk(
 
 export const SetDraw = createAsyncThunk(
   "game/SetDraw",
-  async ({ gameId } : { gameId: IId }) => {
+  async ({ Id } : { Id: IId }) => {
     const token = window.localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
     };
     const { data } = await axios.post(
       `api/Game/SetDraw`,
-      { gameId },
+      { Id },
       { headers }
     );
     return data;

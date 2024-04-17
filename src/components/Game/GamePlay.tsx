@@ -16,6 +16,7 @@ const GamePlay = () => {
   const cells = useAppSelector((state) => state.game.Data?.Field.FieldMoves.Cells);
   let [gameResult, setGameResult] = React.useState<string>()
   let [bgColorClass, setBgColorClass] = React.useState<string>()
+  let [winnerExist, setWinnerExist] = React.useState<boolean>(false)
 
   const gameFieldState = [[0,0,0],[0,0,0],[0,0,0]]
 
@@ -97,6 +98,7 @@ const GamePlay = () => {
   }
 
   const sendWinnerRequest = (winnerIndex : number, loserIndex: number) => {
+    setWinnerExist(true);
     let gameId = game?.Id;
     let winnerId = game?.GamesPlayers[winnerIndex]?.PlayerId;
     let loserId = game?.GamesPlayers[loserIndex]?.PlayerId;
@@ -119,7 +121,8 @@ const GamePlay = () => {
     });
 
     hubConnection.on("LeaveGroup", (userName) => {
-      console.log(userName + "leave game");
+      let chat = document.getElementById("chatBox");
+      chat.innerHTML += `<div class="flex justify-between w-full"><p class="w-3/4 break-words text-yellow-400">${userName} left</p></div>`;
     });
   }, [dispatch]);
 
@@ -130,7 +133,7 @@ const GamePlay = () => {
       let value = cells[i].Value
       gameFieldState[x][y] = value;
     }
-    console.log(gameFieldState)
+
     for(let i = 0; i < gameFieldState.length; i++){
       for(let j = 0; j < gameFieldState.length; j++){
         let id = i.toString() + j.toString()
@@ -148,14 +151,13 @@ const GamePlay = () => {
         }
       }
     }
+
     if (game?.Winner === null){
       checkWinner()
-    }
-    if (game?.GameStatus !== 3){
-      if (game?.StrokeNumber == 9){
-        let gameId = game.Id
-        dispatch(SetDraw({ gameId }))
-        drawResultWindow(gameId, true);
+      if (!winnerExist && game?.StrokeNumber == 9 && game.GameStatus !== 3){
+        const Id = game.Id;
+        dispatch(SetDraw({ Id }))
+        drawResultWindow(Id, true);
       }
     }
   }, [cells]);
@@ -163,7 +165,7 @@ const GamePlay = () => {
     <>
         <div
           id="moveTip"
-          className="w-[360px] m-auto bg-red-100 border-t-4 border-red-500 rounded-b text-teal-900 px-4 py-3 shadow-md hidden"
+          className="absolute w-[360px] m-auto bg-red-100 border-t-4 border-red-500 rounded-b text-teal-900 px-4 py-3 shadow-md hidden"
           role="alert"
         >
           <div className="flex items-center">

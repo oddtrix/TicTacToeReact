@@ -4,7 +4,7 @@ import { IMessages } from "../../types/game.typing";
 const MessageBox = () => {
     const messages = useAppSelector((state) => state.game.Data?.Chat.Messages);
     return (
-    <div className="h-full overflow-y-scroll">
+    <div id="chatBox" className="h-full overflow-y-scroll">
         {Array.isArray(messages) &&
               messages.map((message: IMessages) => (
                 <div className="flex justify-between w-full">
