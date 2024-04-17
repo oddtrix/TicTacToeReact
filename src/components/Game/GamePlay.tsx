@@ -17,7 +17,8 @@ const GamePlay = () => {
   let [gameResult, setGameResult] = React.useState<string>()
   let [bgColorClass, setBgColorClass] = React.useState<string>()
   let [winnerExist, setWinnerExist] = React.useState<boolean>(false)
-
+  let [playersTurn, setPlayersTurn] = React.useState<string>()
+  
   const gameFieldState = [[0,0,0],[0,0,0],[0,0,0]]
 
   const drawResultWindow = (winnerId : IId, draw : boolean) => {
@@ -98,11 +99,9 @@ const GamePlay = () => {
     }
   }
 
-  const sendWinnerRequest = (winnerIndex : number, loserIndex: number) => {
+  const sendWinnerRequest = (winnerId : IId, loserId: IId) => {
     setWinnerExist(true);
-    let gameId = game?.Id;
-    let winnerId = game?.GamesPlayers[winnerIndex]?.PlayerId;
-    let loserId = game?.GamesPlayers[loserIndex]?.PlayerId;
+    let gameId = game?.Id;  
     drawResultWindow(winnerId, false);
     dispatch(SetWinner({winnerId, loserId, gameId}));
   }
@@ -213,7 +212,7 @@ const GamePlay = () => {
       <div className="m-auto flex flex-col w-full">
       <div className="flex m-auto items-center justify-between mt-14 mb-10">
         <div className="mr-10">
-          <p>{game?.GamesPlayers[0].Player.UserName}{circle}</p>
+          <p>{game?.GamesPlayers[0].Player.UserName}{game?.GamesPlayers[0].Player.Id === game?.GameCreatorId ? circle : cross}</p>
         </div>
         <div className="flex">
           <div>
@@ -260,7 +259,7 @@ const GamePlay = () => {
           </div>
         </div>
         <div className="ml-10">
-          <p>{game?.GamesPlayers[1].Player.UserName}{cross}</p>
+          <p>{game?.GamesPlayers[1].Player.UserName}{game?.GamesPlayers[1].Player.Id === game?.GameCreatorId ? circle : cross}</p>
         </div>
         <Chat/>
       </div>

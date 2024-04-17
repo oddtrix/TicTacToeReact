@@ -10,6 +10,7 @@ export interface IGame extends IId{
   Chat: IChat;
   StrokeNumber: number;
   PlayerQueueId: string;
+  GameCreatorId: string,
 }
 
 export interface IGamesPlayer {
