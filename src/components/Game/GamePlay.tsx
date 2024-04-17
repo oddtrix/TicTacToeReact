@@ -98,8 +98,6 @@ const GamePlay = () => {
     }
   }
 
-  const sendWinnerRequest = (winnerId : IId, loserId: IId) => {
-    let gameId = game?.Id;  
   const sendWinnerRequest = (winnerIndex : number, loserIndex: number) => {
     setWinnerExist(true);
     let gameId = game?.Id;
