@@ -63,40 +63,43 @@ const GamePlay = () => {
   }
 
   const checkWinner = () => {
+    let loser = game?.GamesPlayers.find(player => player.Player.Id != userId)?.Player.Id;;
     for (let i = 0; i < gameFieldState.length; i++){
       if (gameFieldState[i][0] == 1 && gameFieldState[i][1] == 1 && gameFieldState[i][2] == 1){
-        sendWinnerRequest(0, 1);
+        sendWinnerRequest(userId, loser);
       }
       if (gameFieldState[i][0] == 2 && gameFieldState[i][1] == 2 && gameFieldState[i][2] == 2){
-        sendWinnerRequest(1, 0);
+        sendWinnerRequest(loser, userId);
       }
     }
 
     for (let i = 0; i < gameFieldState.length; i++){
       if (gameFieldState[0][i] == 1 && gameFieldState[1][i] == 1 && gameFieldState[2][i] == 1){
-        sendWinnerRequest(0, 1);
+        sendWinnerRequest(userId, loser);
       }
       if (gameFieldState[0][i] == 2 && gameFieldState[1][i] == 2 && gameFieldState[2][i] == 2){
-        sendWinnerRequest(1, 0);
+        sendWinnerRequest(loser, userId);
       }
     }
 
     if (gameFieldState[0][0] == 1 &&  gameFieldState[1][1] == 1 && gameFieldState[2][2] == 1) {
-      sendWinnerRequest(0, 1);
+      sendWinnerRequest(userId, loser);
     }
     if (gameFieldState[0][0] == 2 &&  gameFieldState[1][1] == 2 && gameFieldState[2][2] == 2) {
-      sendWinnerRequest(1, 0);
+      sendWinnerRequest(loser, userId);
     }
 
     if (gameFieldState[0][2] == 1 &&  gameFieldState[1][1] == 1 && gameFieldState[2][0] == 1) {
-      sendWinnerRequest(0, 1);
+      sendWinnerRequest(userId, loser);
     }
 
     if (gameFieldState[0][2] == 2 &&  gameFieldState[1][1] == 2 && gameFieldState[2][0] == 2) {
-      sendWinnerRequest(1, 0);
+      sendWinnerRequest(loser, userId);
     }
   }
 
+  const sendWinnerRequest = (winnerId : IId, loserId: IId) => {
+    let gameId = game?.Id;  
   const sendWinnerRequest = (winnerIndex : number, loserIndex: number) => {
     setWinnerExist(true);
     let gameId = game?.Id;
@@ -160,7 +163,18 @@ const GamePlay = () => {
         drawResultWindow(Id, true);
       }
     }
+    definePlayersTurn()
   }, [cells]);
+
+  const definePlayersTurn = () => {
+    if (game?.PlayerQueueId == userId){
+      let playerName = game?.GamesPlayers.find(player => player.Player.Id == userId)?.Player.UserName;;
+      setPlayersTurn(playerName)
+    } else{
+      let playerName = game?.GamesPlayers.find(player => player.Player.Id != userId)?.Player.UserName;
+      setPlayersTurn(playerName)
+    }
+  }
   return (
     <>
         <div
@@ -253,7 +267,7 @@ const GamePlay = () => {
         <Chat/>
       </div>
       <div className="mt-10 text-center">
-        <p>{game?.StrokeNumber % 2 === 0 ? game?.GamesPlayers[0].Player.UserName : game?.GamesPlayers[1].Player.UserName}`s turn</p>
+        <p>{playersTurn}`s turn</p>
       </div>
     </div>
     </>
