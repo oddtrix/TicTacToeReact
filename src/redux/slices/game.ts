@@ -68,38 +68,6 @@ export const MakeMove = createAsyncThunk(
   }
 );
 
-export const SetWinner = createAsyncThunk(
-  "game/SetWinner",
-  async ({ winnerId, loserId, gameId } : { winnerId : IId, loserId : IId, gameId: IId }) => {
-    const token = window.localStorage.getItem("token");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    const { data } = await axios.post(
-      `api/Game/SetWinner`,
-      { winnerId, loserId, gameId },
-      { headers }
-    );
-    return data;
-  }
-);
-
-export const SetDraw = createAsyncThunk(
-  "game/SetDraw",
-  async ({ Id } : { Id: IId }) => {
-    const token = window.localStorage.getItem("token");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    const { data } = await axios.post(
-      `api/Game/SetDraw`,
-      { Id },
-      { headers }
-    );
-    return data;
-  }
-);
-
 export const SendMessage = createAsyncThunk(
   "game/SendMessage",
   async ({ gameId, messageBody, chatId, playerId } : { gameId: IId, messageBody: string, chatId: IId, playerId: IId, }) => {
@@ -179,30 +147,6 @@ const gameSlice = createSlice({
         state.Data = action.payload;
       })
       .addCase(MakeMove.rejected, (state) => {
-        state.Status = Loading.Error;
-        state.Data = null;
-      })
-      .addCase(SetWinner.pending, (state) => {
-        state.Status = Loading.Loading;
-        state.Data = null;
-      })
-      .addCase(SetWinner.fulfilled, (state, action) => {
-        state.Status = Loading.Loaded;
-        state.Data = action.payload;
-      })
-      .addCase(SetWinner.rejected, (state) => {
-        state.Status = Loading.Error;
-        state.Data = null;
-      })
-      .addCase(SetDraw.pending, (state) => {
-        state.Status = Loading.Loading;
-        state.Data = null;
-      })
-      .addCase(SetDraw.fulfilled, (state, action) => {
-        state.Status = Loading.Loaded;
-        state.Data = action.payload;
-      })
-      .addCase(SetDraw.rejected, (state) => {
         state.Status = Loading.Error;
         state.Data = null;
       })

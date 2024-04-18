@@ -1,11 +1,10 @@
 import React from "react";
 import { hubConnection, leaveGameGroup, stopConnection } from "../../helpers/singnalrGameService";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { MakeMove, SetDraw, SetWinner, updateGameState } from "../../redux/slices/game";
+import { MakeMove, updateGameState } from "../../redux/slices/game";
 import { IGame } from "../../types/game.typing";
 import { circle, cross } from "../../constants/string.constants";
 import { Link } from "react-router-dom";
-import { IId } from "../../types/global.typing";
 import Chat from "../Chat/Chat";
 
 const GamePlay = () => {
@@ -16,26 +15,27 @@ const GamePlay = () => {
   const cells = useAppSelector((state) => state.game.Data?.Field.FieldMoves.Cells);
   let [gameResult, setGameResult] = React.useState<string>()
   let [bgColorClass, setBgColorClass] = React.useState<string>()
-  let [winnerExist, setWinnerExist] = React.useState<boolean>(false)
   let [playersTurn, setPlayersTurn] = React.useState<string>()
   
   const gameFieldState = [[0,0,0],[0,0,0],[0,0,0]]
 
-  const drawResultWindow = (winnerId : IId, draw : boolean) => {
-    if (draw) {
-      setBgColorClass('bg-yellow-400');
-      setGameResult("Draw")
-    }
-    else if (winnerId !== userId){
-      setBgColorClass('bg-red-400');
-      setGameResult("You lost")
-    }
-    else if (winnerId === userId){
-      setBgColorClass('bg-green-400');
-      setGameResult("You win")
-    }
-    else {
-      setBgColorClass('bg-gray-400');
+  const drawResultWindow = () => {
+    if (game?.GameStatus == 3) {
+      if (game.Winner == null) {
+        setBgColorClass('bg-yellow-400');
+        setGameResult("Draw")
+      }
+      else if (game?.Winner?.Id !== userId){
+        setBgColorClass('bg-red-400');
+        setGameResult("You lost")
+      }
+      else if (game?.Winner?.Id == userId){
+        setBgColorClass('bg-green-400');
+        setGameResult("You win")
+      }
+      else {
+        setBgColorClass('bg-gray-400');
+      }
     }
   }
 
@@ -61,49 +61,6 @@ const GamePlay = () => {
         }, 2000);
       }
     }
-  }
-
-  const checkWinner = () => {
-    let loser = game?.GamesPlayers.find(player => player.Player.Id != userId)?.Player.Id;;
-    for (let i = 0; i < gameFieldState.length; i++){
-      if (gameFieldState[i][0] == 1 && gameFieldState[i][1] == 1 && gameFieldState[i][2] == 1){
-        sendWinnerRequest(userId, loser);
-      }
-      if (gameFieldState[i][0] == 2 && gameFieldState[i][1] == 2 && gameFieldState[i][2] == 2){
-        sendWinnerRequest(loser, userId);
-      }
-    }
-
-    for (let i = 0; i < gameFieldState.length; i++){
-      if (gameFieldState[0][i] == 1 && gameFieldState[1][i] == 1 && gameFieldState[2][i] == 1){
-        sendWinnerRequest(userId, loser);
-      }
-      if (gameFieldState[0][i] == 2 && gameFieldState[1][i] == 2 && gameFieldState[2][i] == 2){
-        sendWinnerRequest(loser, userId);
-      }
-    }
-
-    if (gameFieldState[0][0] == 1 &&  gameFieldState[1][1] == 1 && gameFieldState[2][2] == 1) {
-      sendWinnerRequest(userId, loser);
-    }
-    if (gameFieldState[0][0] == 2 &&  gameFieldState[1][1] == 2 && gameFieldState[2][2] == 2) {
-      sendWinnerRequest(loser, userId);
-    }
-
-    if (gameFieldState[0][2] == 1 &&  gameFieldState[1][1] == 1 && gameFieldState[2][0] == 1) {
-      sendWinnerRequest(userId, loser);
-    }
-
-    if (gameFieldState[0][2] == 2 &&  gameFieldState[1][1] == 2 && gameFieldState[2][0] == 2) {
-      sendWinnerRequest(loser, userId);
-    }
-  }
-
-  const sendWinnerRequest = (winnerId : IId, loserId: IId) => {
-    setWinnerExist(true);
-    let gameId = game?.Id;  
-    drawResultWindow(winnerId, false);
-    dispatch(SetWinner({winnerId, loserId, gameId}));
   }
 
   React.useEffect(() => {
@@ -151,15 +108,7 @@ const GamePlay = () => {
         }
       }
     }
-
-    if (game?.Winner === null){
-      checkWinner()
-      if (!winnerExist && game?.StrokeNumber == 9 && game.GameStatus !== 3){
-        const Id = game.Id;
-        dispatch(SetDraw({ Id }))
-        drawResultWindow(Id, true);
-      }
-    }
+    drawResultWindow()
     definePlayersTurn()
   }, [cells]);
 
