@@ -20,23 +20,15 @@ const GamePlay = () => {
   const gameFieldState = [[0,0,0],[0,0,0],[0,0,0]]
 
   const drawResultWindow = () => {
-    if (game?.GameStatus == 3) {
-      if (game.Winner == null) {
-        setBgColorClass('bg-yellow-400');
-        setGameResult("Draw")
-      }
-      else if (game?.Winner?.Id !== userId){
-        setBgColorClass('bg-red-400');
-        setGameResult("You lost")
-      }
-      else if (game?.Winner?.Id == userId){
-        setBgColorClass('bg-green-400');
-        setGameResult("You win")
-      }
-      else {
-        setBgColorClass('bg-gray-400');
-      }
-    }
+    if (game?.GameStatus !== 3) return;
+  
+    const winnerId = game?.Winner?.Id;
+    const isWinner = winnerId === userId;
+    const bgColorClass = game.Winner === null ? 'bg-yellow-400' : isWinner ? 'bg-green-400' : 'bg-red-400';
+    const resultMessage = game.Winner === null ? "Draw" : isWinner ? "You win" : "You lost";
+  
+    setBgColorClass(bgColorClass);
+    setGameResult(resultMessage);
   }
 
   const makeMove = async (num : number) => {
