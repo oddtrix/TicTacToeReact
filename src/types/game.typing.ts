@@ -51,3 +51,10 @@ export interface IGameCreate {
   GameStatus: 0;
   IsPrivate: true;
 }
+
+export interface IHistory {
+  Page: number,
+  PageSize:number,
+  TotalPages: number,
+  Items: IGamesPlayer[],
+}

@@ -21,7 +21,7 @@ export enum Loading {
 
 export interface IUserState {
   Data: IUser | null;
-  History: null;
+  History: IHistory | null;
   Status: Loading;
 }
 
@@ -29,7 +29,6 @@ export interface IGameState {
   Data: IGame | null;
   Status: Loading;
 }
-
 
 export interface IConnectionState {
   ConnectionId: IGame | null;

@@ -33,12 +33,12 @@ export const GetAllPlayers = createAsyncThunk(
 
 export const GetPlayerHistory = createAsyncThunk(
   "profile/GetPlayerHistory",
-  async ({ userId }: { userId: IId }) => {
+  async ({ userId, page = 1 }: { userId: IId, page : number }) => {
     const token = window.localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    const { data } = await axios.get(`api/Players/History/${userId.Id}`, {
+    const { data } = await axios.get(`api/Players/History/${userId.Id}?page=${page}`, {
       headers,
     });
     return data;
