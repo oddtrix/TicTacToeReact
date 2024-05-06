@@ -30,9 +30,9 @@ const Pagination = () => {
     };
 
     const renderMiddlePages = () => {
-        const visiblePages = Math.min(3, history.TotalPages); // Ensure max 3 buttons for middle pages
-        const startPage = Math.max(Math.min(history.Page - 1, history.TotalPages - visiblePages + 1), 2); // Clamp start page between 2 and TotalPages-visiblePages+1
-        const endPage = Math.min((startPage + visiblePages - 1 ), history.TotalPages); // Clamp end page between startPage+visiblePages-1 and TotalPages
+        const visiblePages = Math.min(3, history.TotalPages);
+        const startPage = Math.max(Math.min(history.Page - 1, history.TotalPages - visiblePages + 1), 2);
+        const endPage = Math.min((startPage + visiblePages - 1 ), history.TotalPages);
 
         return [...Array(endPage - startPage + 1)].map((_, index) => renderButton(startPage + index));
     };
